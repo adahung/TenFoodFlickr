@@ -4,7 +4,7 @@ import javax.servlet.http.*;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.*;
 
-public class HelloWorld extends HttpServlet {
+public class ApiHandler extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
@@ -17,7 +17,7 @@ public class HelloWorld extends HttpServlet {
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
         context.setContextPath("/");
         server.setHandler(context);
-        context.addServlet(new ServletHolder(new HelloWorld()),"/*");
+        context.addServlet(new ServletHolder(new ApiHandler()),"/*");
         server.start();
         server.join();   
     }

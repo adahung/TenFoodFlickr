@@ -12,6 +12,7 @@ public class ApiHandler extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         resp.getWriter().print("Hello from Java!\n");
+        resp.getWriter().print("Test heroku and git\n");
     }
 
     public static void main(String[] args) throws Exception{

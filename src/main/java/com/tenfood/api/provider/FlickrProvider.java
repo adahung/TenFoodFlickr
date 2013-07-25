@@ -8,4 +8,5 @@ package com.tenfood.api.provider;
  * To change this template use File | Settings | File Templates.
  */
 public class FlickrProvider {
+
 }

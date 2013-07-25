@@ -1,6 +1,7 @@
 package com.tenfood.api;
 
 import java.io.IOException;
+import java.util.Map;
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
 import org.eclipse.jetty.server.Server;
@@ -11,8 +12,12 @@ public class ApiHandler extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
+        String path = req.getServletPath();
+        Map<String, Object> queryMap = req.getParameterMap();
+
         resp.getWriter().print("Hello from Java!\n");
-        resp.getWriter().print("Test heroku and git\n");
+        resp.getWriter().print("Path: " + path + "\n");
+        resp.getWriter().print("Query params count: " + queryMap.size());
     }
 
     public static void main(String[] args) throws Exception{

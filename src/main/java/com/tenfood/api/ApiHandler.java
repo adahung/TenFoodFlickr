@@ -12,7 +12,7 @@ public class ApiHandler extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        String path = req.getServletPath();
+        String path = req.getRequestURI();
         Map<String, Object> queryMap = req.getParameterMap();
 
         resp.getWriter().print("Hello from Java!\n");

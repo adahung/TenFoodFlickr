@@ -28,9 +28,9 @@ public class ApiHandler extends HttpServlet {
             result = resource.getPhotos(queryMap, context);
         }
 
-        resp.getWriter().print("Hello from Java!\n");
-        resp.getWriter().print("Path: " + path + "\n");
-        resp.getWriter().print("Query params count: " + queryMap.size());
+        resp.getWriter().println("Hello from TenFood!");
+        resp.getWriter().println("Path: " + path);
+        resp.getWriter().println("Query params count: " + queryMap.size());
         resp.getWriter().println(new ObjectMapper().writeValueAsString(result));
         resp.getWriter().println(new ObjectMapper().writeValueAsString(context.getMessages()));
     }

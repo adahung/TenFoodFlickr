@@ -32,6 +32,7 @@ public class ApiHandler extends HttpServlet {
         resp.getWriter().print("Path: " + path + "\n");
         resp.getWriter().print("Query params count: " + queryMap.size());
         resp.getWriter().println(new ObjectMapper().writeValueAsString(result));
+        resp.getWriter().println(new ObjectMapper().writeValueAsString(context.getMessages()));
     }
 
     public static void main(String[] args) throws Exception{

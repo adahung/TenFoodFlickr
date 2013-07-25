@@ -27,7 +27,7 @@ public class PhotoResource {
         context.addMessage("text is found in query");
         List<Photo> photos = new ArrayList<Photo>();
         // get text from queryMap
-        String text = queryMap.get("text")[1];
+        String text = queryMap.get("text")[0];
         context.addMessage("search for " + text);
         photos.add(getExamplePhoto());
 

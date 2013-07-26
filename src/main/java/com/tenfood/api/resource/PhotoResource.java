@@ -21,7 +21,7 @@ public class PhotoResource {
         if (queryMap == null)
             return null;
 
-        if (queryMap.size() < 1 && !queryMap.containsKey("text"))
+        if (!queryMap.containsKey("text"))
             return null;
 
         context.addMessage("text is found in query");
@@ -32,7 +32,7 @@ public class PhotoResource {
             context.addMessage("text is empty array");
             return null;
         }
-        context.addMessage("search for " + text);
+        context.addMessage("search for " + text[0]);
         photos.add(getExamplePhoto());
 
         return photos;

@@ -33,8 +33,20 @@ public class PhotoResourceTest {
         assertNull(resource.getPhotos(queryMap, context));
 
         String[] text = new String[1];
-        text[0] = "text";
+        text[0] = "";
         queryMap.put("text", text);
         assertNotNull(resource.getPhotos(queryMap, context));
+    }
+
+    @Test
+    public void testGetPhotosWithOtherParams() throws Exception {
+        PhotoResource resource = new PhotoResource();
+        Context context = new Context();
+        Map<String, String[]> queryMap = new HashMap<String, String[]>();
+
+        String[] text = new String[1];
+        text[0] = "";
+        queryMap.put("a", text);
+        assertNull(resource.getPhotos(queryMap, context));
     }
 }

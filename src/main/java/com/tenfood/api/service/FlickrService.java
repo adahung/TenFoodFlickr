@@ -9,7 +9,6 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
-import java.net.URI;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -46,7 +45,14 @@ public class FlickrService {
             if (text.length == 0) {
                 return;
             }
-            String uri = getSearchRequestURI(text[0]);
+
+            // use default text "Minion" to search photos if the text is empty
+            String targetText = text[0];
+            if (text[0].isEmpty()) {
+                targetText = "Minion";
+            }
+
+            String uri = getSearchRequestURI(targetText);
             HttpGet httpget = new HttpGet(uri);
 
             logger.log(Level.INFO, "executing request " + httpget.getURI());
@@ -84,6 +90,7 @@ public class FlickrService {
         uri.setPath(FLICKR_API_PATH);
         uri.setParameter("api_key", API_KEY);
         uri.setParameter("format", "json");
+        uri.setParameter("nojsoncallback", "1");
     }
 
 

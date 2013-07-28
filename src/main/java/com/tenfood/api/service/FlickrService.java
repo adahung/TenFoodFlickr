@@ -4,12 +4,12 @@ import com.tenfood.api.Context;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.params.BasicHttpParams;
-import org.apache.http.params.HttpParams;
 import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
+import java.net.URI;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -27,7 +27,8 @@ public class FlickrService {
 
     // general
     private static final String API_KEY = "bc97b3f08ea2f8d50edc9ca20daaf1fc";
-    private static final String FLICKR_API_SERVER = "http://api.flickr.com/services/rest";
+    private static final String FLICKR_API_SERVER = "api.flickr.com";
+    private static final String FLICKR_API_PATH = "/services/rest/";
 
     // api methods
     private static final String PHOTOS_SEARCH_API = "flickr.photos.search";
@@ -45,9 +46,8 @@ public class FlickrService {
             if (text.length == 0) {
                 return;
             }
-            HttpGet httpget = new HttpGet(FLICKR_API_SERVER);
-            HttpParams httpParams = this.getSearchParams(text[0]);
-            httpget.setParams(httpParams);
+            String uri = getSearchRequestURI(text[0]);
+            HttpGet httpget = new HttpGet(uri);
 
             logger.log(Level.INFO, "executing request " + httpget.getURI());
             context.addMessage("executing request " + httpget.getURI());
@@ -69,20 +69,21 @@ public class FlickrService {
         }
     }
 
-    public HttpParams getSearchParams(String text) {
-        HttpParams httpParams = this.getBasicParams();
-        httpParams.setParameter("method", PHOTOS_SEARCH_API);
-        httpParams.setParameter("text", text);
+    public String getSearchRequestURI(String text) {
+        URIBuilder uri = new URIBuilder();
+        getBasicURI(uri);
+        uri.setParameter("method", PHOTOS_SEARCH_API);
+        uri.setParameter("text", text);
 
-        return httpParams;
+        return uri.toString();
     }
 
-    public HttpParams getBasicParams() {
-        HttpParams httpParams = new BasicHttpParams();
-        httpParams.setParameter("api_key", API_KEY);
-        httpParams.setParameter("format", "json");
-
-        return httpParams;
+    private void getBasicURI(URIBuilder uri) {
+        uri.setScheme("http");
+        uri.setHost(FLICKR_API_SERVER);
+        uri.setPath(FLICKR_API_PATH);
+        uri.setParameter("api_key", API_KEY);
+        uri.setParameter("format", "json");
     }
 
 

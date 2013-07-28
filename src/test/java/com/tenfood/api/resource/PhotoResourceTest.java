@@ -1,6 +1,6 @@
 package com.tenfood.api.resource;
 
-import com.tenfood.api.utils.Context;
+import com.tenfood.api.Context;
 import org.testng.annotations.Test;
 
 import java.util.HashMap;

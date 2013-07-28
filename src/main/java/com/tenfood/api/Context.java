@@ -1,4 +1,4 @@
-package com.tenfood.api.utils;
+package com.tenfood.api;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,5 +23,9 @@ public class Context {
 
     public List<String> getMessages() {
         return this.messages;
+    }
+
+    public void addError(int errorCode, String errorMsg) {
+
     }
 }

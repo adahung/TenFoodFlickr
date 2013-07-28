@@ -1,7 +1,8 @@
 package com.tenfood.api.resource;
 
 import com.tenfood.api.model.Photo;
-import com.tenfood.api.utils.Context;
+import com.tenfood.api.Context;
+import com.tenfood.api.service.FlickrService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +26,7 @@ public class PhotoResource {
             return null;
 
         context.addMessage("text is found in query");
-        List<Photo> photos = new ArrayList<Photo>();
+
         // get text from queryMap
         String[] text = queryMap.get("text");
         if (text.length == 0) {
@@ -33,6 +34,13 @@ public class PhotoResource {
             return null;
         }
         context.addMessage("search for " + text[0]);
+
+        // search photos from flickr
+        FlickrService flickrService = new FlickrService(context);
+        flickrService.search(text);
+
+        // create response photo list
+        List<Photo> photos = new ArrayList<Photo>();
         photos.add(getExamplePhoto());
 
         return photos;

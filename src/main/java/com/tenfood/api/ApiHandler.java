@@ -2,11 +2,9 @@ package com.tenfood.api;
 
 import java.io.IOException;
 import java.util.Map;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
 
-import com.tenfood.api.utils.Context;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.*;

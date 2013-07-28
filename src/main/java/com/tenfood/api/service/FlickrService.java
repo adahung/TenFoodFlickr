@@ -54,8 +54,6 @@ public class FlickrService {
 
             HttpResponse response = httpclient.execute(httpget);
 
-            response = httpclient.execute(httpget);
-
             logger.log(Level.INFO, response.getStatusLine().toString());
             context.addMessage(response.getStatusLine().toString());
             context.addMessage(EntityUtils.toString(response.getEntity()));

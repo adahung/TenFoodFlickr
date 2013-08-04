@@ -28,9 +28,9 @@ public class ApiHandler extends HttpServlet {
             result = resource.getPhotos(context);
         }
 
-        resp.getWriter().println("{ \"photos\": {");
+        resp.getWriter().println("{ \"photos\": ");
         resp.getWriter().println(new ObjectMapper().writeValueAsString(result));
-        resp.getWriter().println("} ,");
+        resp.getWriter().println(",");
         resp.getWriter().println("\"context\": {");
         resp.getWriter().println(new ObjectMapper().writeValueAsString(context.getMessages()));
         resp.getWriter().println("}}");

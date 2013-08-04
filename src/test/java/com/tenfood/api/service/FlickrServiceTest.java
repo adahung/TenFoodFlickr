@@ -15,7 +15,7 @@ import static org.testng.Assert.assertTrue;
 public class FlickrServiceTest {
     @Test
     public void testGetSearchRequestURI() throws Exception {
-        FlickrService service = new FlickrService(new Context());
+        FlickrService service = new FlickrService();
         String uriString = service.getSearchRequestURI("test");
 
         assertTrue(uriString.contains("method=flickr.photos.search"));

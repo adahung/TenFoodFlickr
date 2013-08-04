@@ -5,6 +5,7 @@ import java.util.Map;
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
 
+import com.tenfood.api.service.FlickrService;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.*;
@@ -22,8 +23,8 @@ public class ApiHandler extends HttpServlet {
         Object result = null;
 
         if ( path.equals("/photo") ) {
-            PhotoResource resource = new PhotoResource();
-            result = resource.getPhotos(queryMap, context);
+            PhotoResource resource = new PhotoResource(new FlickrService());
+            result = resource.getPhotos(context);
         }
 
         resp.getWriter().println("Hello from TenFood!");

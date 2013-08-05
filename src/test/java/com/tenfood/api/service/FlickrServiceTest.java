@@ -16,10 +16,11 @@ public class FlickrServiceTest {
     @Test
     public void testGetSearchRequestURI() throws Exception {
         FlickrService service = new FlickrService();
-        String uriString = service.getSearchRequestURI("test");
+        String uriString = service.getSearchRequestURI("test", 1);
 
         assertTrue(uriString.contains("method=flickr.photos.search"));
         assertTrue(uriString.contains("text=test"));
         assertTrue(uriString.contains("api_key="));
+        assertTrue(uriString.contains("per_page=1"));
     }
 }

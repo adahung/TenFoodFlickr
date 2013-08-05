@@ -33,6 +33,10 @@ public class FlickrService {
     private static final String PHOTOS_SEARCH_API = "flickr.photos.search";
 
     public JSONObject search(String text, Context context) {
+        return this.search(text, 1, context);
+    }
+
+    public JSONObject search(String text, int count, Context context) {
         // search photos api http://www.flickr.com/services/api/flickr.photos.search.html
         // example request http://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=3cab8038b2f5b174960cae51757502c4&text=minion&has_geo=&format=json&nojsoncallback=1&auth_token=72157634822741157-457c6f62545a84a7&api_sig=19ba9a4e090095efeb65640f68afd369 from http://www.flickr.com/services/api/explore/flickr.photos.search
 
@@ -42,7 +46,7 @@ public class FlickrService {
                 return null;
             }
 
-            String uri = getSearchRequestURI(text);
+            String uri = getSearchRequestURI(text, count);
             HttpGet httpget = new HttpGet(uri);
 
             logger.log(Level.INFO, "executing request " + httpget.getURI());
@@ -72,11 +76,12 @@ public class FlickrService {
         return null;
     }
 
-    public String getSearchRequestURI(String text) {
+    public String getSearchRequestURI(String text, int count) {
         URIBuilder uri = new URIBuilder();
         getBasicURI(uri);
         uri.setParameter("method", PHOTOS_SEARCH_API);
         uri.setParameter("text", text);
+        uri.setParameter("per_page", String.valueOf(count));
 
         return uri.toString();
     }

@@ -66,6 +66,18 @@ public class PhotoResource {
             logger.warning(e.getMessage());
         }
 
+        // get photo infos
+        for (Photo photo : photos) {
+            JSONObject rslt = _flickrService.getInfo(photo.getId(), photo.getSecret(), context);
+            if (rslt != null) {
+                photo.setInfo(rslt.toString());
+            }
+            else {
+                photo.setInfo(null);
+            }
+
+        }
+
         return photos;
     }
 

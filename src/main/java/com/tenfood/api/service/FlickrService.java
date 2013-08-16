@@ -4,10 +4,13 @@ package com.tenfood.api.service;
 import com.ning.http.client.Response;
 import com.tenfood.api.Context;
 import com.tenfood.api.common.HttpClient;
+import com.tenfood.api.model.Photo;
 import org.apache.http.client.utils.URIBuilder;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -72,6 +75,18 @@ public class FlickrService {
     }
 
     public JSONObject getInfo(String photo_id, String secret, Context context) {
+        String uri  = getPhotoInfoURI(photo_id, secret);
+        try {
+            HttpClient httpClient = new HttpClient();
+            Response resp = httpClient.doGet(uri);
+
+            if (resp.getStatusCode() == 200) {
+                return new JSONObject(resp.getResponseBody());
+            }
+
+        } catch (Exception e) {
+            context.addMessage(e.getMessage());
+        }
 
         return null;
     }

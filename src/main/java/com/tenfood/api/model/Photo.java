@@ -12,6 +12,7 @@ public class Photo {
     private String url;
     private String id;
     private String secret;
+    private String info;
 
     public void setUrl(String url) {
         this.url = url;
@@ -35,5 +36,13 @@ public class Photo {
 
     public String getSecret() {
         return secret;
+    }
+
+    public void setInfo(String info) {
+        this.info = info;
+    }
+
+    public String getInfo() {
+        return info;
     }
 }

@@ -3,15 +3,10 @@ package com.tenfood.api.common;
 import com.ning.http.client.AsyncCompletionHandler;
 import com.ning.http.client.AsyncHttpClient;
 import com.ning.http.client.Response;
-import com.tenfood.api.Context;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.util.EntityUtils;
-import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.logging.Level;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
 /**
  * Created with IntelliJ IDEA.
@@ -21,22 +16,22 @@ import java.util.logging.Level;
  * To change this template use File | Settings | File Templates.
  */
 public class HttpClient {
-    public Response doGet(String url) throws IOException {
+    public Response doGet(String url) throws Exception {
         AsyncHttpClient asyncHttpClient = new AsyncHttpClient();
-        asyncHttpClient.prepareGet(url).execute(new AsyncCompletionHandler(){
+        Future<Response> f = asyncHttpClient.prepareGet(url).execute(new AsyncCompletionHandler() {
 
             @Override
-            public Response onCompleted(Response response) throws Exception{
+            public Response onCompleted(Response response) throws Exception {
                 // Do something with the Response
                 // ...                                   `
                 return response;
             }
 
             @Override
-            public void onThrowable(Throwable t){
+            public void onThrowable(Throwable t) {
                 // Something wrong happened.
             }
         });
-        return null;
+        return f.get();
     }
 }

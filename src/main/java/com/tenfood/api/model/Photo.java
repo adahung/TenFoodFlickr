@@ -10,6 +10,8 @@ package com.tenfood.api.model;
 public class Photo {
 
     private String url;
+    private String id;
+    private String secret;
 
     public void setUrl(String url) {
         this.url = url;
@@ -17,5 +19,21 @@ public class Photo {
 
     public String getUrl() {
         return url;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setSecret(String secret) {
+        this.secret = secret;
+    }
+
+    public String getSecret() {
+        return secret;
     }
 }

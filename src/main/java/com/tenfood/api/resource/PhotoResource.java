@@ -72,6 +72,8 @@ public class PhotoResource {
         for (int i = 0; i < photoArray.length(); i++ ) {
             Photo photo = new Photo();
             JSONObject obj = photoArray.getJSONObject(i);
+            photo.setId(obj.getString("id"));
+            photo.setSecret(obj.getString("secret"));
             photo.setUrl(generateFlickrUrl( obj.getString("farm"),
                                             obj.getString("server"),
                                             obj.getString("id"),

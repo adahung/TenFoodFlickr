@@ -43,7 +43,7 @@ public class PhotoResourceTest {
                 "    ] }, \"stat\": \"ok\" }";
         JSONObject flickrSrchObj = new JSONObject(srchRsltString);
 
-        Mockito.when(flickrService.search("test", context)).thenReturn(flickrSrchObj);
+        Mockito.when(flickrService.search("test", 10, context)).thenReturn(flickrSrchObj);
         Mockito.when(flickrService.search("", context)).thenReturn(null);
 
         resource = new PhotoResource(flickrService);

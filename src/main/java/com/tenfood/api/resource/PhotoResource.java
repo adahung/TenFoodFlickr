@@ -3,6 +3,7 @@ package com.tenfood.api.resource;
 import com.tenfood.api.model.Photo;
 import com.tenfood.api.Context;
 import com.tenfood.api.service.FlickrService;
+import org.apache.commons.lang.math.NumberUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -40,15 +41,17 @@ public class PhotoResource {
 
         // get text from queryMap
         String[] text = queryMap.get("text");
+        String[] count = queryMap.get("count");
         if (text.length == 0) {
             context.addMessage("text is empty array");
             return null;
         }
+        int cnt = (count == null || count.length == 0 || !NumberUtils.isNumber(count[0]))? 10: Integer.parseInt(count[0]);
         context.addMessage("search for " + text[0]);
         logger.info("search for " + text[0]);
 
         // search photos from flickr
-        JSONObject srchRslt = _flickrService.search(text[0], context);
+        JSONObject srchRslt = _flickrService.search(text[0], cnt, context);
         if (srchRslt == null) {
             logger.info("search result is null");
             return null;

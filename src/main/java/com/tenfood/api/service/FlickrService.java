@@ -1,12 +1,10 @@
 package com.tenfood.api.service;
 
+
+import com.ning.http.client.Response;
 import com.tenfood.api.Context;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
+import com.tenfood.api.common.HttpClient;
 import org.apache.http.client.utils.URIBuilder;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.util.EntityUtils;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -31,6 +29,7 @@ public class FlickrService {
 
     // api methods
     private static final String PHOTOS_SEARCH_API = "flickr.photos.search";
+    private static final String PHOTOS_INFO_API = "flickr.photos.getInfo";
 
     public JSONObject search(String text, Context context) {
         return this.search(text, 1, context);
@@ -40,38 +39,39 @@ public class FlickrService {
         // search photos api http://www.flickr.com/services/api/flickr.photos.search.html
         // example request http://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=3cab8038b2f5b174960cae51757502c4&text=minion&has_geo=&format=json&nojsoncallback=1&auth_token=72157634822741157-457c6f62545a84a7&api_sig=19ba9a4e090095efeb65640f68afd369 from http://www.flickr.com/services/api/explore/flickr.photos.search
 
-        HttpClient httpclient = new DefaultHttpClient();
+        if (text.isEmpty()) {
+            return null;
+        }
+
+        String uri = getSearchRequestURI(text, count);
         try {
-            if (text.isEmpty()) {
-                return null;
-            }
 
-            String uri = getSearchRequestURI(text, count);
-            HttpGet httpget = new HttpGet(uri);
+            HttpClient httpclient = new HttpClient();
 
-            logger.log(Level.INFO, "executing request " + httpget.getURI());
-            context.addMessage("executing request " + httpget.getURI());
+            logger.log(Level.INFO, "executing request " + uri);
+            context.addMessage("executing request " + uri);
 
-            HttpResponse response = httpclient.execute(httpget);
+            Response response = httpclient.doGet(uri);
 
-            if (response.getStatusLine().getStatusCode() != 200) {
-                logger.log(Level.WARNING, response.getStatusLine().toString());
-                context.addMessage(response.getStatusLine().toString());
+            if (response.getStatusCode() != 200)
+            {
+                logger.log(Level.WARNING, response.getStatusText());
+                context.addMessage(response.getStatusText());
                 return null;
             }
 
             // parse json response
-            return new JSONObject(EntityUtils.toString(response.getEntity()));
+            return new JSONObject(response.getResponseBody());
 
         } catch (Exception e) {
             logger.log(Level.WARNING, e.getMessage());
             context.addMessage(e.getMessage());
-        } finally {
-            // When HttpClient instance is no longer needed,
-            // shut down the connection manager to ensure
-            // immediate deallocation of all system resources
-            httpclient.getConnectionManager().shutdown();
         }
+
+        return null;
+    }
+
+    public JSONObject getInfo(String photo_id, String secret, Context context) {
 
         return null;
     }
@@ -82,6 +82,17 @@ public class FlickrService {
         uri.setParameter("method", PHOTOS_SEARCH_API);
         uri.setParameter("text", text);
         uri.setParameter("per_page", String.valueOf(count));
+
+        return uri.toString();
+    }
+
+    public String getPhotoInfoURI(String photo_id, String secret) {
+        //  http://api.flickr.com/services/rest/?method=flickr.photos.getInfo&api_key=70abf45679a23b4fe604527e65aee2b0&photo_id=9524594318&format=json&nojsoncallback=1
+        URIBuilder uri = new URIBuilder();
+        getBasicURI(uri);
+        uri.setParameter("method", PHOTOS_INFO_API);
+        uri.setParameter("photo_id", photo_id);
+        uri.setParameter("secret", secret);
 
         return uri.toString();
     }

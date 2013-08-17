@@ -1,19 +1,12 @@
 package com.tenfood.api.service;
 
-
-import com.ning.http.client.Response;
 import com.tenfood.api.Context;
-import com.tenfood.api.common.HttpClient;
 import com.tenfood.api.common.HttpProvider;
-import com.tenfood.api.model.Photo;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONObject;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 

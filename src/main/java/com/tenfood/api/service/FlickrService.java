@@ -4,8 +4,11 @@ package com.tenfood.api.service;
 import com.ning.http.client.Response;
 import com.tenfood.api.Context;
 import com.tenfood.api.common.HttpClient;
+import com.tenfood.api.common.HttpProvider;
 import com.tenfood.api.model.Photo;
+import org.apache.http.HttpResponse;
 import org.apache.http.client.utils.URIBuilder;
+import org.apache.http.util.EntityUtils;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -49,22 +52,22 @@ public class FlickrService {
         String uri = getSearchRequestURI(text, count);
         try {
 
-            HttpClient httpclient = new HttpClient();
+            HttpProvider httpProvider = new HttpProvider();
 
             logger.log(Level.INFO, "executing request " + uri);
             context.addMessage("executing request " + uri);
 
-            Response response = httpclient.doGet(uri);
+            HttpResponse response = httpProvider.doGet(uri, context);
 
-            if (response.getStatusCode() != 200)
+            if (response.getStatusLine().getStatusCode() != 200)
             {
-                logger.log(Level.WARNING, response.getStatusText());
-                context.addMessage(response.getStatusText());
+                logger.log(Level.WARNING, response.getStatusLine().toString());
+                context.addMessage(response.getStatusLine().toString());
                 return null;
             }
 
             // parse json response
-            return new JSONObject(response.getResponseBody());
+            return new JSONObject(EntityUtils.toString(response.getEntity()));
 
         } catch (Exception e) {
             logger.log(Level.WARNING, e.getMessage());
@@ -77,15 +80,16 @@ public class FlickrService {
     public JSONObject getInfo(String photo_id, String secret, Context context) {
         String uri  = getPhotoInfoURI(photo_id, secret);
         try {
-            HttpClient httpClient = new HttpClient();
-            Response resp = httpClient.doGet(uri);
+            HttpProvider httpClient = new HttpProvider();
+            HttpResponse resp = httpClient.doGet(uri, context);
 
-            if (resp.getStatusCode() == 200) {
-                return new JSONObject(resp.getResponseBody());
+            if (resp.getStatusLine().getStatusCode() == 200) {
+                return new JSONObject(EntityUtils.toString(resp.getEntity()));
             }
 
         } catch (Exception e) {
             context.addMessage(e.getMessage());
+
         }
 
         return null;

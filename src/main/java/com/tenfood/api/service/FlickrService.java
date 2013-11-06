@@ -7,6 +7,9 @@ import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONObject;
 
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -30,6 +33,12 @@ public class FlickrService {
     private static final String PHOTOS_SEARCH_API = "flickr.photos.search";
     private static final String PHOTOS_INFO_API = "flickr.photos.getInfo";
 
+    // search api params
+    private static final Set<String> PHOTOS_SEARCH_API_PARAMS = new HashSet<String>();
+    static {
+        PHOTOS_SEARCH_API_PARAMS.add("sort");
+    };
+
     public JSONObject search(String text, Context context) {
         return this.search(text, 1, context);
     }
@@ -42,7 +51,7 @@ public class FlickrService {
             return null;
         }
 
-        String uri = getSearchRequestURI(text, count);
+        String uri = getSearchRequestURI(text, count, context);
         try {
 
             HttpProvider httpProvider = new HttpProvider();
@@ -55,7 +64,7 @@ public class FlickrService {
             if (response.getStatusLine().getStatusCode() != 200)
             {
                 logger.log(Level.WARNING, response.getStatusLine().toString());
-                context.addMessage(response.getStatusLine().toString());
+                context.addMessage("Not 200:" + response.getStatusLine().toString());
                 return null;
             }
 
@@ -88,12 +97,20 @@ public class FlickrService {
         return null;
     }
 
-    public String getSearchRequestURI(String text, int count) {
+    public String getSearchRequestURI(String text, int count, Context context) {
         URIBuilder uri = new URIBuilder();
         getBasicURI(uri);
         uri.setParameter("method", PHOTOS_SEARCH_API);
         uri.setParameter("text", text);
         uri.setParameter("per_page", String.valueOf(count));
+
+        // add additional search api params
+        Map<String, String[]> queryMap = context.getQueryMap();
+        for (String key: queryMap.keySet()) {
+             if (PHOTOS_SEARCH_API_PARAMS.contains(key) && queryMap.get(key).length > 0) {
+                 uri.setParameter(key, queryMap.get(key)[0]);
+             }
+        }
 
         return uri.toString();
     }

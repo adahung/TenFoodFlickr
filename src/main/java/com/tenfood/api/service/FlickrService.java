@@ -69,10 +69,12 @@ public class FlickrService {
             }
 
             // parse json response
-            return new JSONObject(EntityUtils.toString(response.getEntity()));
+            String responseText = EntityUtils.toString(response.getEntity());
+            return new JSONObject(responseText);
 
         } catch (Exception e) {
             logger.log(Level.WARNING, e.getMessage());
+            e.printStackTrace();
             context.addMessage(e.getMessage());
         }
 

@@ -13,6 +13,8 @@ public class Photo {
     private String id;
     private String secret;
     private String info;
+    private FlickrUser owner;
+    private String origUrl;
 
     public void setUrl(String url) {
         this.url = url;
@@ -44,5 +46,21 @@ public class Photo {
 
     public String getInfo() {
         return info;
+    }
+
+    public void setOwner(FlickrUser owner) {
+        this.owner = owner;
+    }
+
+    public FlickrUser getOwner() {
+        return owner;
+    }
+
+    public void setOrigUrl(String origUrl) {
+        this.origUrl = origUrl;
+    }
+
+    public String getOrigUrl() {
+        return origUrl;
     }
 }

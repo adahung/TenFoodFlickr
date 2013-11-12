@@ -28,6 +28,7 @@ public class ApiHandler extends HttpServlet {
             result = resource.getPhotos(context);
         }
 
+        resp.addHeader("Access-Control-Allow-Origin", "*");
         resp.getWriter().println("{ \"photos\": ");
         resp.getWriter().println(new ObjectMapper().writeValueAsString(result));
         resp.getWriter().println(",");

@@ -37,6 +37,14 @@ public class FlickrService {
     private static final Set<String> PHOTOS_SEARCH_API_PARAMS = new HashSet<String>();
     static {
         PHOTOS_SEARCH_API_PARAMS.add("sort");
+        PHOTOS_SEARCH_API_PARAMS.add("group_id");
+        PHOTOS_SEARCH_API_PARAMS.add("user_id");
+        PHOTOS_SEARCH_API_PARAMS.add("contacts");
+        PHOTOS_SEARCH_API_PARAMS.add("place_id");
+        PHOTOS_SEARCH_API_PARAMS.add("woe_id");
+        PHOTOS_SEARCH_API_PARAMS.add("has_geo");
+        PHOTOS_SEARCH_API_PARAMS.add("lat");
+        PHOTOS_SEARCH_API_PARAMS.add("lon");
     };
 
     public JSONObject search(String text, Context context) {

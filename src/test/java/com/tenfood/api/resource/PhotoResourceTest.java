@@ -1,6 +1,7 @@
 package com.tenfood.api.resource;
 
 import com.tenfood.api.Context;
+import com.tenfood.api.model.FlickrUser;
 import com.tenfood.api.model.Photo;
 import com.tenfood.api.service.FlickrService;
 import org.json.JSONException;
@@ -46,6 +47,16 @@ public class PhotoResourceTest {
         Mockito.when(flickrService.search("test", 10, context)).thenReturn(flickrSrchObj);
         Mockito.when(flickrService.search("", context)).thenReturn(null);
 
+        String infoString = "{\"photo\": {\"owner\": {\"nsid\": \"10132892@N03\"," +
+                                                      "\"username\": \"max_turci\"" +
+                                                     "}," +
+                                         "\"urls\": {\"url\": [{ " +
+                                                        "\"type\": \"photopage\", " +
+                                                        "\"_content\": \"http://www.flickr.com/photos/10132892@N03/10773719563/\"" +
+                                                        "}]}" +
+                            "}}";
+        JSONObject infoObj = new JSONObject(infoString);
+        Mockito.when(flickrService.getInfo("9432874385", "1b3ed99eb5", context)).thenReturn(infoObj);
         resource = new PhotoResource(flickrService);
 
     }
@@ -89,6 +100,27 @@ public class PhotoResourceTest {
         assertEquals(1, photoList.size());
         assertEquals( "http://farm8.staticflickr.com/7377/9432874385_1b3ed99eb5.jpg",
                         photoList.get(0).getUrl());
+    }
+
+    @Test
+    public void testGetPhotoInfo() throws Exception {
+        String[] text = new String[1];
+        text[0] = "test";
+        context.getQueryMap().clear();
+        context.getQueryMap().put("text", text);
+        List<Photo> photoList = resource.getPhotos(context);
+
+        assertNotNull(photoList);
+        assertEquals(1, photoList.size());
+
+        Photo photoObj = photoList.get(0);
+        FlickrUser user = photoObj.getOwner();
+        assertEquals( "http://farm8.staticflickr.com/7377/9432874385_1b3ed99eb5.jpg",
+                photoList.get(0).getUrl());
+        assertNotNull(user);
+        assertEquals("10132892@N03", user.getNsid());
+        assertEquals("http://www.flickr.com/photos/10132892@N03/10773719563/", photoObj.getOrigUrl());
+
     }
 
 }

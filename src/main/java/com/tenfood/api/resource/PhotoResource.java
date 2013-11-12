@@ -1,5 +1,6 @@
 package com.tenfood.api.resource;
 
+import com.tenfood.api.model.FlickrUser;
 import com.tenfood.api.model.Photo;
 import com.tenfood.api.Context;
 import com.tenfood.api.service.FlickrService;
@@ -70,6 +71,7 @@ public class PhotoResource {
         for (Photo photo : photos) {
             JSONObject rslt = _flickrService.getInfo(photo.getId(), photo.getSecret(), context);
             if (rslt != null) {
+                setPhotoInfo(photo, rslt);
                 photo.setInfo(rslt.toString());
             }
             else {
@@ -79,6 +81,27 @@ public class PhotoResource {
         }
 
         return photos;
+    }
+
+    /* set author nsid, name and photo url to photo object */
+    private void setPhotoInfo(Photo photo, JSONObject rslt) {
+        try {
+            JSONObject photoJsonObj = rslt.getJSONObject("photo");
+            JSONObject owner = photoJsonObj.getJSONObject("owner");
+            FlickrUser user = new FlickrUser();
+            user.setNsid(owner.getString("nsid"));
+            user.setUsername(owner.getString("username"));
+            photo.setOwner(user);
+
+            // urls
+            JSONArray urls = photoJsonObj.getJSONObject("urls").getJSONArray("url");
+            JSONObject url = urls.getJSONObject(0);
+            photo.setOrigUrl(url.getString("_content"));
+
+        } catch (JSONException e) {
+            photo.setOwner(null);
+            photo.setOrigUrl("");
+        }
     }
 
     private List<Photo> generatePhotosFromSearchResult(JSONObject srchRslt) throws JSONException {

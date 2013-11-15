@@ -68,7 +68,7 @@ public class PhotoResource {
         }
 
         // get photo infos
-        for (Photo photo : photos) {
+        /*for (Photo photo : photos) {
             JSONObject rslt = _flickrService.getInfo(photo.getId(), photo.getSecret(), context);
             if (rslt != null) {
                 setPhotoInfo(photo, rslt);
@@ -78,7 +78,7 @@ public class PhotoResource {
                 photo.setInfo(null);
             }
 
-        }
+        }      */
 
         return photos;
     }
